@@ -1,5 +1,8 @@
 name: Build and Deploy to EC2
 
+permissions:
+  contents: read
+  packages: write
 on:
   push:
     branches: ["main"]
