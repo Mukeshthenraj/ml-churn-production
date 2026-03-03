@@ -21,6 +21,8 @@ services:
       DATABASE_URL: postgresql+psycopg2://churn_user:churn_pass@db:5432/churn_db
     ports:
       - "8000:8000"
+    volumes:
+      - ./data/model:/app/data/model:ro
 
   prometheus:
     image: prom/prometheus:latest
