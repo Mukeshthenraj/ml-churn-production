@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: churn-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: churn-postgres
+  template:
+    metadata:
+      labels:
+        app: churn-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: churn-postgres-secret
+          volumeMounts:
+            - name: pgdata
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: churn-postgres
+spec:
+  selector:
+    app: churn-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
