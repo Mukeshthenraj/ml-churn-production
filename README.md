@@ -1,702 +1,226 @@
-\# 🚀 ML Churn Prediction Production System
+🚀 ML Churn Prediction Production System
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
+![Docker](https://img.shields.io/badge/Docker-Container-blue)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-Orchestration-blue)
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange)
+![Prometheus](https://img.shields.io/badge/Prometheus-Monitoring-orange)
+![Grafana](https://img.shields.io/badge/Grafana-Dashboard-yellow)
+![CI/CD](https://img.shields.io/badge/GitHub-Actions-blue)
+A production-style Machine Learning system for predicting customer
+churn. This project demonstrates how to deploy, monitor, and operate a
+machine learning model in a production environment using modern MLOps
+tools.
+The system exposes a FastAPI inference API, runs inside Docker
+containers, is deployed using Kubernetes, and includes
+monitoring with Prometheus and Grafana. Deployment automation is
+handled via GitHub Actions CI/CD, and the system can be deployed on
+AWS EC2.
+---
+🏗 System Architecture
+![Architecture](docs/architecture/ml_churn_architecture_simple_aligned.png)
+High-level workflow
+User sends request to FastAPI prediction API
+API loads trained churn model
+Prediction is generated
+Results are logged to PostgreSQL
+Metrics are exposed to Prometheus
+Dashboards visualized in Grafana
+CI/CD automatically deploys updates via GitHub Actions
+---
+📦 Tech Stack
+Machine Learning
+Python
+Scikit-learn
+Pandas
+Jupyter Notebooks
+Backend API
+FastAPI
+Uvicorn
+Data Storage
+PostgreSQL
+Containerization
+Docker
+Docker Compose
+Orchestration
+Kubernetes
+Monitoring
+Prometheus
+Grafana
+Infrastructure
+AWS EC2
+CI/CD
+GitHub Actions
+---
+📂 Project Structure
+    ml-churn-production
+    │
+    ├── src/                    # Application source code
+    │   ├── api/                # FastAPI endpoints
+    │   ├── db/                 # Database logic
+    │   └── ml/                 # Model loading & prediction
+    │
+    ├── data/                   # Training data
+    ├── notebooks/              # Model training notebooks
+    ├── tests/                  # Unit tests
+    │
+    ├── k8s/                    # Kubernetes manifests
+    ├── infra/                  # Infrastructure configs
+    │   └── prometheus/
+    │
+    ├── docs/
+    │   ├── architecture/       # System architecture diagram
+    │   └── screenshots/        # Dashboard & API screenshots
+    │
+    ├── docker-compose.yml
+    ├── Dockerfile
+    ├── requirements.txt
+    └── README.md
 
+---
+⚙️ Running the Project Locally
+1️⃣ Clone the repository
+    git clone https://github.com/YOUR_USERNAME/ml-churn-production.git
+    cd ml-churn-production
 
+2️⃣ Build Docker containers
+    docker compose build
 
-Production-ready Machine Learning API built with \*\*FastAPI\*\*, containerized using \*\*Docker\*\*, deployed with \*\*Kubernetes\*\*, automated with \*\*GitHub Actions CI/CD\*\*, and monitored using \*\*Prometheus + Grafana\*\* on \*\*AWS EC2\*\*.
+3️⃣ Start services
+    docker compose up -d
 
+4️⃣ Verify running containers
+    docker compose ps
 
+Expected services:
+churn-api
+churn-db
+prometheus
+grafana
+---
+🌐 API Endpoints
+Health check
+    GET /health
 
-This project demonstrates how to take a \*\*machine learning model from training to production infrastructure\*\*.
+Prediction endpoint
+    POST /v1/predict
 
-
-
-\---
-
-
-
-\# 📌 Project Goal
-
-
-
-The goal of this project is to simulate a \*\*real production ML system\*\* that includes:
-
-
-
-\* ML model training pipeline
-
-\* REST API for predictions
-
-\* containerized deployment
-
-\* Kubernetes orchestration
-
-\* CI/CD pipeline
-
-\* monitoring and observability
-
-\* cloud deployment
-
-
-
-\---
-
-
-
-\# 🧠 Machine Learning Problem
-
-
-
-Dataset: \*\*Telco Customer Churn\*\*
-
-
-
-The model predicts whether a telecom customer will \*\*leave the service (churn)\*\*.
-
-
-
-Output example:
-
-
-
-```
-
+Example request
+``` json
 {
-
-&#x20; "churn\_probability": 0.69,
-
-&#x20; "churn\_label": 1
-
+  "tenure": 5,
+  "monthly_charges": 75,
+  "contract_type": "Month-to-month"
 }
-
 ```
-
-
-
-\---
-
-
-
-\# 🏗️ System Architecture
-
-
-
-!\[Architecture](docs/architecture/ml\_churn\_architecture\_simple\_aligned.png)
-
-
-
-\---
-
-
-
-\# ⚙️ Tech Stack
-
-
-
-\### Machine Learning
-
-
-
-\* Python
-
-\* Scikit-learn
-
-\* Pandas
-
-\* Joblib
-
-
-
-\### API Layer
-
-
-
-\* FastAPI
-
-\* Uvicorn
-
-\* Pydantic
-
-
-
-\### Infrastructure
-
-
-
-\* Docker
-
-\* Docker Compose
-
-\* Kubernetes (Docker Desktop)
-
-
-
-\### Data Storage
-
-
-
-\* PostgreSQL
-
-
-
-\### Monitoring
-
-
-
-\* Prometheus
-
-\* Grafana
-
-
-
-\### DevOps
-
-
-
-\* Git
-
-\* GitHub
-
-\* GitHub Actions CI/CD
-
-
-
-\### Cloud
-
-
-
-\* AWS EC2
-
-\* DuckDNS domain
-
-
-
-\---
-
-
-
-\# 📂 Project Structure
-
-
-
-```
-
-ml-churn-production
-
-│
-
-├── src
-
-│   ├── api
-
-│   │   └── main.py
-
-│   ├── model
-
-│   └── services
-
-│
-
-├── data
-
-│
-
-├── infra
-
-│   └── prometheus
-
-│
-
-├── k8s
-
-│
-
-├── docs
-
-│   ├── architecture
-
-│   └── screenshots
-
-│
-
-├── Dockerfile
-
-├── docker-compose.yml
-
-├── requirements.txt
-
-└── README.md
-
-```
-
-
-
-\---
-
-
-
-\# 🔁 Machine Learning Pipeline
-
-
-
-1️⃣ Load dataset
-
-2️⃣ Data preprocessing
-
-3️⃣ Train classification model
-
-4️⃣ Save model artifact
-
-5️⃣ Serve model via API
-
-
-
-\---
-
-
-
-\# 🌐 API Endpoints
-
-
-
-\### Health Check
-
-
-
-```
-
-GET /health
-
-```
-
-
-
-Example response:
-
-
-
-```
-
-{
-
-&#x20; "status": "ok"
-
-}
-
-```
-
-
-
-\---
-
-
-
-\### Prediction Endpoint
-
-
-
-```
-
-POST /predict
-
-```
-
-
-
-Example request:
-
-
-
-```
-
-{
-
-&#x20;"tenure": 12,
-
-&#x20;"monthly\_charges": 70,
-
-&#x20;"contract\_type": "Month-to-month"
-
-}
-
-```
-
-
-
-Example response:
-
-
-
-```
-
-{
-
-&#x20;"churn\_probability": 0.69,
-
-&#x20;"churn\_label": 1
-
-}
-
-```
-
-
-
-\---
-
-
-
-\### Metrics Endpoint (Prometheus)
-
-
-
-```
-
-GET /metrics
-
-```
-
-
-
-Used for monitoring request performance.
-
-
-
-\---
-
-
-
-\# 📊 Monitoring Dashboard
-
-
-
-The API is monitored using \*\*Prometheus and Grafana\*\*.
-
-
-
-\### System Metrics Overview
-
-
-
-!\[Dashboard](docs/screenshots/dashboard-overview.png)
-
-
-
-\---
-
-
-
-\### Request Rate
-
-
-
-!\[Request Rate](docs/screenshots/request-rate.png)
-
-
-
-\---
-
-
-
-\### Prediction Volume
-
-
-
-!\[Prediction Volume](docs/screenshots/predict-volume.png)
-
-
-
-\---
-
-
-
-\### Latency p95
-
-
-
-!\[Latency](docs/screenshots/latency-p95.png)
-
-
-
-\---
-
-
-
-\### Error Rate
-
-
-
-!\[Error Rate](docs/screenshots/error-rate.png)
-
-
-
-\---
-
-
-
-\# 🐳 Docker Deployment
-
-
-
-Build containers:
-
-
-
-```
-
-docker compose build
-
-```
-
-
-
-Start services:
-
-
-
-```
-
-docker compose up -d
-
-```
-
-
-
-Services started:
-
-
-
-\* FastAPI ML API
-
-\* PostgreSQL database
-
-\* Prometheus
-
-\* Grafana
-
-
-
-\---
-
-
-
-\# ☸️ Kubernetes Deployment
-
-
-
-Deploy application:
-
-
-
-```
-
-kubectl apply -f k8s/
-
-```
-
-
-
-Check services:
-
-
-
-```
-
-kubectl get svc
-
-```
-
-
-
-Forward API locally:
-
-
-
-```
-
-kubectl port-forward service/churn-api 8000:8000
-
-```
-
-
-
-\---
-
-
-
-\# ☁️ AWS Deployment
-
-
-
-The system is deployed on:
-
-
-
-\*\*AWS EC2\*\*
-
-
-
-Components deployed:
-
-
-
-\* Docker containers
-
-\* API service
-
-\* monitoring stack
-
-
-
-Public access is provided via \*\*DuckDNS domain\*\*.
-
-
-
-\---
-
-
-
-\# 🔄 CI/CD Pipeline
-
-
-
-CI/CD is implemented using \*\*GitHub Actions\*\*.
-
-
-
-Pipeline automatically:
-
-
-
-1️⃣ builds Docker image
-
-2️⃣ connects to EC2
-
-3️⃣ deploys latest version
-
-
-
-Example workflow:
-
-
-
-!\[CI/CD](docs/screenshots/github-actions-success.png)
-
-
-
-\---
-
-
-
-\# 📈 Observability Stack
-
-
-
-Monitoring stack:
-
-
-
-```
-
-API → Prometheus → Grafana
-
-```
-
-
-
-Prometheus collects:
-
-
-
-\* request rate
-
-\* request latency
-
-\* error rate
-
-
-
-Grafana visualizes system performance.
-
-
-
-\---
-
-
-
-\# 🧪 Example Prediction
-
-
-
-Example curl request:
-
-
-
-```
-
-curl -X POST http://localhost:8000/predict \\
-
-\-H "Content-Type: application/json" \\
-
-\-d '{
-
-"tenure": 12,
-
-"monthly\_charges": 70
-
-}'
-
-```
-
-
-
-\---
-
-
-
-\# 📚 Key Skills Demonstrated
-
-
-
-This project demonstrates production-level skills in:
-
-
-
-\* Machine Learning deployment
-
-\* MLOps
-
-\* Docker containerization
-
-\* Kubernetes orchestration
-
-\* CI/CD automation
-
-\* Monitoring and observability
-
-\* Cloud infrastructure
-
-
-
-\---
-
-
-
-\# 👨‍💻 Author
-
-
-
-Mukesh Thenraj
-
-
-
-M.Sc. Automation \& Safety Engineering
-
+---
+📡 API Documentation
+Swagger UI automatically generated by FastAPI.
+![API Docs](docs/screenshots/api-docs.png)
+Access locally:
+    http://localhost:8000/docs
+
+---
+📊 Monitoring
+The system exposes Prometheus metrics for monitoring prediction
+traffic, latency, and errors.
+Metrics Endpoint
+    GET /metrics
+
+![Metrics Endpoint](docs/screenshots/metrics-endpoint.png)
+---
+📈 Grafana Monitoring Dashboards
+Dashboard Overview
+![Dashboard](docs/screenshots/dashboard-overview.png)
+Request Rate
+![Request Rate](docs/screenshots/request-raterequest-rate.png)
+Prediction Volume
+![Prediction Volume](docs/screenshots/predict-volume.png)
+Latency (p95)
+![Latency](docs/screenshots/latency-p95.png)
+Error Rate
+![Error Rate](docs/screenshots/error-rate.png)
+---
+🐳 Docker Deployment
+The entire system runs inside containers.
+Services included:
+ML API
+PostgreSQL
+Prometheus
+Grafana
+Docker makes the project portable and reproducible.
+---
+☸ Kubernetes Deployment
+The application can also run in a Kubernetes cluster.
+Example components:
+Deployment
+Service
+NodePort exposure
+Container orchestration
+Test locally with:
+    kubectl apply -f k8s/
+
+---
+☁ AWS Deployment
+The system can be deployed to AWS EC2.
+Typical deployment flow
+    GitHub → GitHub Actions → AWS EC2 → Docker containers
+
+This enables automated CI/CD deployments.
+---
+🔄 CI/CD Pipeline
+GitHub Actions automatically:
+Builds Docker images
+Runs tests
+Deploys to server
+![GitHub Actions](docs/screenshots/github-actions-success.png)
+---
+🌍 Public Access
+The project supports dynamic domain routing using DuckDNS.
+![DuckDNS Domain](docs/screenshots/duckdns-domain.png)
+---
+🧪 Example Prediction Logs
+Prediction requests are stored in PostgreSQL for auditing and
+monitoring.
+Example fields:
+request_id
+churn_probability
+churn_label
+latency_ms
+timestamp
+---
+🎯 Key Learning Outcomes
+This project demonstrates:
+Production ML API deployment
+Containerized ML systems
+CI/CD for machine learning
+Monitoring ML models
+Kubernetes orchestration
+Cloud deployment patterns
+---
+👨‍💻 Author
+Mukesh Thenraj  
+Automation & AI Engineer  
+M.Sc Automation and Safety Engineering  
 University of Duisburg-Essen
-
-
-
-GitHub
-
+GitHub:
 https://github.com/Mukeshthenraj
-
-
-
+---
+⭐ Future Improvements
+Possible extensions:
+Model drift monitoring
+Feature store integration
+Auto model retraining
+Canary deployments
+ML experiment tracking (MLflow)
+---
+🎯 Final Result
+This project demonstrates a complete end-to-end ML production system
+including:
+✔ Model training  
+✔ API deployment  
+✔ Docker containers  
+✔ Kubernetes orchestration  
+✔ Monitoring & observability  
+✔ CI/CD automation  
+✔ Cloud deployment
