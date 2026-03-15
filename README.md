@@ -1,5 +1,5 @@
 
-# 🚀 ML Churn Prediction Production System (End‑to‑End MLOps Platform)
+# 🚀 ML Churn Prediction Production System (End-to-End MLOps Platform)
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
@@ -30,13 +30,30 @@ The goal is to show **how a real ML service is built, deployed, monitored, and m
 
 ---
 
+# ⚡ Quick Start (Run the System in 3 Commands)
+
+```bash
+git clone https://github.com/Mukeshthenraj/ml-churn-production.git
+cd ml-churn-production
+docker compose up -d
+```
+
+Then open:
+
+| Service | URL |
+|------|------|
+| API Docs | http://localhost:8000/docs |
+| Health Check | http://localhost:8000/health |
+| Metrics | http://localhost:8000/metrics |
+| Grafana | http://localhost:3000 |
+
+---
+
 # 🧠 Machine Learning Model
 
-The churn model is trained using **Scikit‑learn** and typical preprocessing techniques used in production ML pipelines.
+The churn model is trained using **Scikit-learn**.
 
-### Training Pipeline
-
-Implemented in:
+Training pipeline implemented in:
 
 src/ml/train.py
 
@@ -51,8 +68,8 @@ Steps:
 
 Technologies used:
 
-• Scikit‑learn  
 • Pandas  
+• Scikit-learn  
 • Pathlib  
 • Joblib  
 
@@ -60,22 +77,58 @@ The trained model is later loaded inside the **FastAPI inference service**.
 
 ---
 
+# 📊 Dataset
+
+The model uses a **telecom customer churn dataset** with features like:
+
+• Tenure  
+• Monthly Charges  
+• Contract Type  
+• Payment Method  
+• Customer Demographics  
+
+Target variable:
+
+`churn`
+
+Values:
+
+0 → customer retained  
+1 → customer churned  
+
+---
+
+# 📈 Model Performance
+
+Example evaluation metrics for the trained model:
+
+| Metric | Score |
+|------|------|
+| Accuracy | ~0.86 |
+| Precision | ~0.82 |
+| Recall | ~0.79 |
+| F1 Score | ~0.80 |
+
+These metrics demonstrate the model's ability to identify customers likely to churn.
+
+---
+
 # ⚡ FastAPI Prediction Service
 
 The model is exposed as a **REST API** using **FastAPI**.
 
-Main file:
+Main API file:
 
 src/api/main.py
 
-Features:
+Endpoints/Features:
 
 • `/v1/predict` endpoint for predictions  
 • `/health` endpoint for health checks  
 • `/metrics` endpoint for Prometheus metrics  
-• Automatic **Swagger UI documentation**  
+• Automatic **Swagger UI documentation**    
 
-Schemas for request validation are implemented with **Pydantic**:
+Request schema defined using **Pydantic** in:
 
 src/api/schemas.py
 
@@ -86,6 +139,15 @@ Example request:
   "tenure": 5,
   "monthly_charges": 75,
   "contract_type": "Month-to-month"
+}
+```
+
+Example response:
+
+```json
+{
+  "churn_probability": 0.69,
+  "churn_label": 1
 }
 ```
 
@@ -102,13 +164,13 @@ Predictions are stored in **PostgreSQL** for auditing and monitoring.
 Database logic is implemented using:
 
 • SQLAlchemy  
-• Psycopg2
+• Psycopg2  
 
-Key files:
+Files:
 
 src/db/database.py  
 src/db/models.py  
-src/db/crud.py
+src/db/crud.py  
 
 Stored fields:
 
@@ -120,25 +182,29 @@ Stored fields:
 
 ---
 
-# 🐳 Containerized Infrastructure
+# 🐳 Docker Containerized Infrastructure
 
 The entire system runs inside **Docker containers**.
 
 Defined in:
 
 Dockerfile  
-docker-compose.yml
+docker-compose.yml  
 
 Containers:
 
 • churn-api  
-• postgres database  
+• postgres  
 • prometheus  
 • grafana  
 
 Run locally:
 
+```bash
 docker compose up -d
+```
+
+![Docker Containers](docs/screenshots/docker-containers.png)
 
 ---
 
@@ -162,8 +228,6 @@ GET /metrics
 ---
 
 # 📈 Grafana Dashboards
-
-Example monitoring dashboards:
 
 ### Dashboard Overview
 
@@ -209,13 +273,15 @@ k8s/postgres/secret.yaml
 
 Run locally with Docker Desktop Kubernetes:
 
+```bash
 kubectl apply -f k8s/
+```
 
 ---
 
 # ☁ AWS Deployment
 
-The system is deployed to **AWS EC2**.
+Deployed on **AWS EC2 (t3.micro)**.
 
 Infrastructure used:
 
@@ -223,11 +289,28 @@ Infrastructure used:
 • AMI  
 • Security Groups  
 • Elastic IP  
-• SSH access using `.pem` keypair  
+• SSH access using `.pem` keypair   
 
 Deployment flow:
 
-GitHub → GitHub Actions → EC2 → Docker containers
+GitHub → GitHub Actions → EC2 → Docker
+
+---
+
+# 🔐 Environment Variables
+
+The system uses environment variables for configuration.
+
+Example variables:
+
+| Variable | Description |
+|------|------|
+| DATABASE_URL | PostgreSQL connection |
+| MODEL_PATH | Location of trained model |
+| API_PORT | FastAPI port |
+| PROMETHEUS_PORT | Metrics port |
+
+These variables can be configured in docker-compose.yml or Kubernetes secrets.
 
 ---
 
@@ -263,11 +346,38 @@ Public access configured using:
 
 ![Architecture](docs/architecture/ml_churn_architecture_simple_aligned.png)
 
+Components:
+
+| Component | Purpose |
+|------|------|
+| FastAPI | ML inference |
+| PostgreSQL | Prediction logs |
+| Prometheus | Metrics |
+| Grafana | Monitoring |
+| Docker | Containers |
+| Kubernetes | Orchestration |
+| GitHub Actions | CI/CD |
+| AWS EC2 | Cloud hosting |
+
 Flow:
 
 User → FastAPI API → ML Model → PostgreSQL  
                               ↓  
                      Prometheus Metrics → Grafana Dashboards
+
+---
+
+# 💡 Why This Project Matters
+
+Most ML projects stop at notebooks.
+
+This project demonstrates:
+
+• ML model production deployment  
+• Monitoring ML systems  
+• Containerized infrastructure  
+• CI/CD automation  
+• Cloud deployment  
 
 ---
 
@@ -309,11 +419,17 @@ ml-churn-production
 
 ---
 
+# 📜 License
+
+MIT License
+
+---
+
 # 👨‍💻 Author
 
 Mukesh Thenraj  
 M.Sc Automation & Safety Engineering  
-University of Duisburg‑Essen
+University of Duisburg-Essen  
 
-GitHub:  
+GitHub  
 https://github.com/Mukeshthenraj
