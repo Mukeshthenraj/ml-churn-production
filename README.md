@@ -273,6 +273,7 @@ User → FastAPI API → ML Model → PostgreSQL
 
 # 📂 Project Structure
 
+```
 ml-churn-production
 │
 ├── src/
@@ -291,6 +292,7 @@ ml-churn-production
 ├── Dockerfile
 ├── docker-compose.yml
 └── README.md
+```
 
 ---
 
