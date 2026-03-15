@@ -11,8 +11,7 @@
 ![CI/CD](https://img.shields.io/badge/GitHub-Actions-blue)
 
 ---
-
-![Dashboard](docs/screenshots/dashboard-overview.png)
+# 🎬 Project Overview
 
 This repository demonstrates a **complete production-style Machine Learning system** for predicting **customer churn**.
 
@@ -27,6 +26,18 @@ The project covers the **entire lifecycle of an ML system**, including:
 • CI/CD automation  
 
 The goal is to show **how a real ML service is built, deployed, monitored, and maintained in production**.
+
+### ML API (Swagger UI)
+
+![API Docs](docs/screenshots/api-docs.png)
+
+### Grafana Monitoring Dashboard
+
+![Grafana Dashboard](docs/screenshots/dashboard-overview.png)
+
+### Docker Infrastructure
+
+![Docker Containers](docs/screenshots/docker-containers.png)
 
 ---
 
