@@ -49,6 +49,22 @@ Then open:
 
 ---
 
+# 🛠 Tech Stack
+
+| Layer | Technology |
+|------|------------|
+| Machine Learning | Scikit-learn, Pandas |
+| API | FastAPI, Uvicorn |
+| Database | PostgreSQL, SQLAlchemy |
+| Containerization | Docker, Docker Compose |
+| Orchestration | Kubernetes |
+| Monitoring | Prometheus, Grafana |
+| CI/CD | GitHub Actions |
+| Cloud | AWS EC2 |
+| Web Server | Nginx |
+
+---
+
 # 🧠 Machine Learning Model
 
 The churn model is trained using **Scikit-learn**.
@@ -366,6 +382,104 @@ User → FastAPI API → ML Model → PostgreSQL
                      Prometheus Metrics → Grafana Dashboards
 
 ---
+
+# 🔄 End-to-End Request Flow
+
+This section explains how a prediction request moves through the system.
+
+### 1️⃣ Client Request
+
+A user sends a request to:
+
+POST /v1/predict
+
+The request contains customer features.
+
+---
+
+### 2️⃣ API Layer (FastAPI)
+
+The request is received by the FastAPI service.
+
+Responsibilities:
+
+• Validate request using Pydantic schemas  
+• Load trained ML model  
+• Execute prediction  
+• Measure latency  
+• Log prediction request  
+
+---
+
+### 3️⃣ ML Inference
+
+The trained model is loaded using:
+
+joblib.load()
+
+Prediction pipeline:
+
+raw features → preprocessing → model inference → churn probability
+
+---
+
+### 4️⃣ Database Logging
+
+Prediction results are stored in PostgreSQL.
+
+Stored fields:
+
+• request_id  
+• churn_probability  
+• churn_label  
+• latency_ms  
+• timestamp
+
+---
+
+### 5️⃣ Metrics Collection
+
+The API exposes Prometheus metrics via:
+
+GET /metrics
+
+Metrics include:
+
+• request count  
+• latency distribution  
+• error rate
+
+Prometheus periodically scrapes these metrics.
+
+---
+
+### 6️⃣ Monitoring
+
+Prometheus stores metrics and Grafana visualizes them through dashboards.
+
+Example dashboards:
+
+• request rate  
+• prediction volume  
+• latency p95  
+• error rate
+
+---
+
+### 7️⃣ CI/CD Deployment
+
+When code is pushed to GitHub:
+
+GitHub → GitHub Actions → EC2 → Docker containers
+
+Pipeline steps:
+
+1. Build Docker image
+2. Push image
+3. Deploy updated service
+
+---
+
 
 # 💡 Why This Project Matters
 
